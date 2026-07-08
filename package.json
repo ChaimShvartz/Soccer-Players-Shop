@@ -1,0 +1,25 @@
+{
+  "name": "soccer-players-shop",
+  "version": "1.0.0",
+  "description": "## About the Program The application includes an Express server that serves a soccer player store. It is written in JavaScript and uses local JSON files to store data.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChaimShvartz/Soccer-Players-Shop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChaimShvartz/Soccer-Players-Shop/issues"
+  },
+  "homepage": "https://github.com/ChaimShvartz/Soccer-Players-Shop#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
