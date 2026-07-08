@@ -1,11 +1,6 @@
 import { readJson, saveJson } from "./fileHandler.js";
 
-const ordersDataPath = "./data/orders.json";
+const context = { fileName: "orders.json" };
 
-export function loadOrders() {
-    return readJson(ordersDataPath);
-}
-
-export function dumpOrders(orders) {
-    return saveJson(ordersDataPath, orders);
-}
+export const loadOrders = readJson.bind(context);
+export const dumpOrders = saveJson.bind(context);
