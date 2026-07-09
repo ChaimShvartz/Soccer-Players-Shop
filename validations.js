@@ -4,11 +4,15 @@ export const validator = {
         errMessage: "inStock must be a boolean value",
     },
     maxPrice: {
-        checking: (value) => value > 0 && value <= 100,
+        checking: (price) => value > 0 && price <= 100,
         errMessage: "maxPrice must be a number in range(1, 101)",
     },
     search: {
-        checking: (value) => value.length,
+        checking: (key) => key.length,
         errMessage: "search must be non-empty",
+    },
+    id: {
+        checking: (id) => id > 0,
+        errMessage: "ID must be an integer",
     },
 };

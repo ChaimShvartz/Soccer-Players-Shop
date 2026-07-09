@@ -1,6 +1,12 @@
-import { readJson, saveJson } from "./fileHandler.js";
+import { getFilteredItems } from "./baseDal.js";
 
-const context = { fileName: "customers.json" };
+const fileName = "customers.json";
 
-export const loadCustomers = readJson.bind(context);
-export const dumpCustomers = saveJson.bind(context);
+export async function getCustomerBalance(customerId) {
+    const customer = await getFilteredItems(
+        fileName,
+        { customerId },
+        { customerId: (customer) => customer.customerId === customerId },
+    );
+    return customer[0]?.balance || null;
+}

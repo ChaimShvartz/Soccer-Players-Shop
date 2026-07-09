@@ -1,9 +1,8 @@
 import { Router } from "express";
-// import { getFilterredProducts } from "../dal/productsDal.js";
-// import { getFilteredProducts } from "../services/productsServices.js";
 import { getFilteredProducts } from "../dal/productsDal.js";
+import { getCustomerBalance } from "../dal/customersDal.js";
 import { getFinalFilters } from "../services/productsServices.js";
-// import { isValidValue } from "../validations.js";
+import { getVerifiedCustomerId } from "../services/customersServices.js";
 
 const router = Router();
 
@@ -20,14 +19,29 @@ router.get("/health", (req, res) => {
 
 router.get("/products", async (req, res) => {
     try {
-        const finalFilters = getFinalFilters(req.query)
+        const finalFilters = getFinalFilters(req.query);
         const filteredProducts = await getFilteredProducts(finalFilters);
         res.json({ success: true, data: filteredProducts });
     } catch (err) {
-        res.json({ success: false, message: err.message });
+        res.status(422).json({ success: false, message: err.message });
     }
 });
 
-router.get("/account/balance", (req, res) => {});
+router.get("/account/balance", async (req, res) => {
+    try {
+        const customerId = getVerifiedCustomerId(req.query);
+        const customerBalance = await getCustomerBalance(customerId);
+
+        if (customerBalance === null)
+            return res.status(404).json({
+                success: "false",
+                message: "Customer not found",
+            });
+
+        res.json({ suscess: true, data: customerBalance });
+    } catch (err) {
+        res.status(422).json({ success: false, message: err.message });
+    }
+});
 
 export default router;
