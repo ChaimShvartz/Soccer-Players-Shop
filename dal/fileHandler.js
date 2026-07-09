@@ -1,9 +1,9 @@
 import fs from "fs/promises";
 import "dotenv/config";
 
-export async function readJson() {
+export async function readJson(fileName) {
     try {
-        const fullPath = process.env.DATA_BASE_PATH + this.fileName;
+        const fullPath = process.env.DATA_BASE_PATH + fileName;
         const data = await fs.readFile(fullPath);
         return JSON.parse(data);
     } catch (err) {
@@ -12,9 +12,9 @@ export async function readJson() {
     }
 }
 
-export async function saveJson(data) {
+export async function saveJson(fileName, data) {
     try {
-        const fullPath = process.env.DATA_BASE_PATH + this.fileName;
+        const fullPath = process.env.DATA_BASE_PATH + fileName;
         return await fs.writeFile(
             fullPath,
             JSON.stringify(data, null, 2),
