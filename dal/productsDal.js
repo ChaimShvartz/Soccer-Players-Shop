@@ -1,6 +1,17 @@
-import { readJson, saveJson } from "./fileHandler.js";
+import { getFilteredItems } from "./baseDal.js";
 
-const context = { fileName: "products.json" };
+const fileName = "products.json";
 
-export const loadProducts = readJson.bind(context);
-export const dumpProducts = saveJson.bind(context);
+export async function getFilteredProducts(filters) {
+    const productsFiltersObj = {
+        inStock: (product) =>
+            filters.inStock === "true"
+                ? product.stock > 0
+                : product.stock === 0,
+        maxPrice: (product) => product.price <= filters.maxPrice,
+        search: (product) =>
+            product.name.toLowerCase().includes(filters.search.toLowerCase()),
+    };
+
+    return await getFilteredItems(fileName, filters, productsFiltersObj);
+}
