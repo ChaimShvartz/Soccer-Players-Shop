@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getFilteredProducts } from "../dal/productsDal.js";
-import { getCustomerBalance } from "../dal/customersDal.js";
+import { getCustomerProperty } from "../dal/customersDal.js";
 import { getFinalFilters } from "../services/productsServices.js";
 import { getVerifiedCustomerId } from "../services/customersServices.js";
 
@@ -30,9 +30,12 @@ router.get("/products", async (req, res) => {
 router.get("/account/balance", async (req, res) => {
     try {
         const customerId = getVerifiedCustomerId(req.query);
-        const customerBalance = await getCustomerBalance(customerId);
+        const customerBalance = await getCustomerProperty(
+            customerId,
+            "balance",
+        );
 
-        if (customerBalance === null)
+        if (customerBalance === undefined)
             return res.status(404).json({
                 success: "false",
                 message: "Customer not found",
