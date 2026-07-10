@@ -1,11 +1,17 @@
 import { readJson } from "./fileHandler.js";
-import { validator } from "../validations.js";
 
 export async function getFilteredItems(fileName, filters, filterObj) {
-    const products = await readJson(fileName);
+    const items = await readJson(fileName);
 
     return Object.keys(filters).reduce(
         (acc, key) => acc.filter(filterObj[key]),
-        products,
+        items,
     );
 }
+
+export async function findItem(fileName, predicate) {
+    const items = await readJson(fileName)
+
+    return items.find(predicate)
+}
+
