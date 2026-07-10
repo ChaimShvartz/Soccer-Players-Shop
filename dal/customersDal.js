@@ -1,12 +1,15 @@
-import { getFilteredItems } from "./baseDal.js";
+import { findItem, getFilteredItems } from "./baseDal.js";
 
 const fileName = "customers.json";
 
-export async function getCustomerBalance(customerId) {
-    const customer = await getFilteredItems(
+export async function getCustomerProperty(customerId, property) {
+    const customer = await getCustomer(customerId);    
+    return customer?.[property];
+}
+
+export async function getCustomer(customerId) {
+    return await findItem(
         fileName,
-        { customerId },
-        { customerId: (customer) => customer.customerId === customerId },
+        (customer) => customer.customerId === customerId,
     );
-    return customer[0]?.balance || null;
 }
