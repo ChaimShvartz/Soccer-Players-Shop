@@ -19,8 +19,7 @@ router.get("/health", (req, res) => {
 
 router.get("/products", async (req, res) => {
     try {
-        const finalFilters = getVerifiedCustomerId(req.query, ['inStock', 'maxPrice', 'search']);
-        console.log(finalFilters);
+        const finalFilters = getVerifiedDetails(req.query, ['inStock', 'maxPrice', 'search']);
         
         const filteredProducts = await getFilteredProducts(finalFilters);
         res.json({ success: true, data: filteredProducts });

@@ -8,19 +8,19 @@ export const validator = {
         errMessage: "maxPrice must be a number in range(1, 101)",
     },
     search: {
-        checking: (key) => key.length,
+        checking: (key) => key?.length,
         errMessage: "search must be non-empty",
     },
     id: {
-        checking: (id) => id.length,
+        checking: (id) => id?.length,
         errMessage: "ID must be non-empty",
     },
     customerId: {
-        checking: (id) => id.length,
+        checking: (id) => id?.length,
         errMessage: "ID must be non-empty",
     },
     productId: {
-        checking: (id) => id.length,
+        checking: (id) => id?.length,
         errMessage: "ID must be non-empty",
     },
     quantity: {

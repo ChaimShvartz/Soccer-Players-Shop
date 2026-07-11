@@ -15,7 +15,6 @@ export async function getItems(fileName) {
 
 export async function findItem(fileName, predicate) {
     const items = await readJson(fileName)    
-
     return items.find(predicate)
 }
 
