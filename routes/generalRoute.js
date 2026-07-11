@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getFilteredProducts } from "../dal/productsDal.js";
 import { getCustomerProperty } from "../dal/customersDal.js";
-import { getFinalFilters } from "../services/productsServices.js";
+import {  getVerifiedDetails } from "../utils.js";
 import { getVerifiedCustomerId } from "../services/customersServices.js";
 
 const router = Router();
@@ -19,7 +19,9 @@ router.get("/health", (req, res) => {
 
 router.get("/products", async (req, res) => {
     try {
-        const finalFilters = getFinalFilters(req.query);
+        const finalFilters = getVerifiedCustomerId(req.query, ['inStock', 'maxPrice', 'search']);
+        console.log(finalFilters);
+        
         const filteredProducts = await getFilteredProducts(finalFilters);
         res.json({ success: true, data: filteredProducts });
     } catch (err) {
@@ -29,9 +31,9 @@ router.get("/products", async (req, res) => {
 
 router.get("/account/balance", async (req, res) => {
     try {
-        const customerId = getVerifiedCustomerId(req.query);
+        const {customerId} = getVerifiedDetails(req.query, ['customerId'], true);
         const customerBalance = await getCustomerProperty(
-            customerId,
+            +customerId,
             "balance",
         );
 

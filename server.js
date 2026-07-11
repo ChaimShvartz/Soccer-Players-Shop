@@ -7,12 +7,12 @@ import generalRouter from "./routes/generalRoute.js";
 const server = express();
 
 server.use(express.json());
-server.use((req, res, next) => {
+server.use((req, res, next) => {   
     console.log(req.url, req.method);
     next();
 });
 
-server.use("/carts", cartsRouter);
+server.use("/cart", cartsRouter);
 server.use("/orders", orderRouter);
 server.use(generalRouter);
 

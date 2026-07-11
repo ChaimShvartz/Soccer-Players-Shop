@@ -16,6 +16,6 @@ export async function getFilteredProducts(filters) {
     return await getFilteredItems(fileName, filters, productsFiltersObj);
 }
 
-export async function getProduct(productId) {
+export async function getProduct(productId) {    
     return await findItem(fileName, (product) => product.id === productId);
 }
