@@ -11,11 +11,11 @@ import "dotenv/config";
 export function getVerifiedCustomerId({ customerId }) {
     const { checking, errMessage } = validator.id;
     if (!checking(customerId)) throw new Error(errMessage);
-    return +customerId;
+    return customerId;
 }
 
 export function getFinalParams(params) {
-    return getVerifiedCustomerId(
+    return getVerifiedDetails(
         params,
         ["customerId", "productId", "quantity"],
         true,
@@ -41,4 +41,23 @@ export async function addProductToCart(customerId, productId, quantity) {
         item ? (item.quantity += quantity) : customer.cart.push(newItem);
     }
     saveCustomers(customers);
+}
+
+export async function removeItemFromCart(productId, customerId) {
+    const customers = await getCustomers();
+
+    const customer = customers.find(
+        (customer) => customer.customerId === customerId,
+    );
+    if (!customer) throw new Error("Customer not found");
+
+    const itemIndex = customer.cart.findIndex(
+        (item) => item.productId === productId,
+    );
+
+    if (itemIndex === -1) return;
+    
+    customer.cart.splice(itemIndex, 1);
+    saveCustomers(customers);
+    return true;
 }

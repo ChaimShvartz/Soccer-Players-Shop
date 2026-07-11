@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
     addProductToCart,
     getVerifiedCustomerId,
+    removeItemFromCart
 } from "../services/customersServices.js";
 import { getCustomer, getCustomerProperty } from "../dal/customersDal.js";
 import { getTotalAmount } from "../services/productsServices.js";
@@ -31,8 +32,12 @@ router.get("/", async (req, res) => {
 
 router.post("/items", async (req, res) => {
     try {
-        const { customerId, productId, quantity } = getVerifiedDetails(req.body, ['customerId', 'productId', 'quantity'], true);        
-        
+        const { customerId, productId, quantity } = getVerifiedDetails(
+            req.body,
+            ["customerId", "productId", "quantity"],
+            true,
+        );
+
         const product = await getProduct(+productId);
         if (!product)
             return res.status(404).json({
@@ -52,6 +57,28 @@ router.post("/items", async (req, res) => {
         res.status(422).json({ success: false, message: err.message });
     }
 });
-router.delete("/items/:productId", (req, res) => {});
+
+router.delete("/items/:productId", async (req, res) => {
+    try {
+        const { productId, customerId } = getVerifiedDetails(
+            { ...req.body, ...req.params },
+            ["customerId", "productId"],
+            true,
+        );
+
+        const product = getProduct(productId);
+        if (!product)
+            res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+
+        await removeItemFromCart(productId, customerId)
+            ? res.json({ success: true, msg: "Product deleted successfully" })
+            : res.sendStatus(204);
+    } catch (err) {
+        res.status(422).json({ success: false, message: err.message });
+    }
+});
 
 export default router;
