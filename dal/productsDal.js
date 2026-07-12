@@ -1,4 +1,4 @@
-import { findItem, getFilteredItems } from "./baseDal.js";
+import { findItem, getFilteredItems, getItems, saveData } from "./baseDal.js";
 
 const fileName = "products.json";
 
@@ -18,4 +18,12 @@ export async function getFilteredProducts(filters) {
 
 export async function getProduct(productId) {    
     return await findItem(fileName, (product) => product.id === productId);
+}
+
+export async function getProducts() {
+    return await getItems(fileName)
+}
+
+export async function saveProducts(products) {
+    await saveData(fileName, products)
 }

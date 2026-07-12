@@ -1,13 +1,14 @@
+import { getFilteredItems, getItems, saveData } from "./baseDal.js";
+
 const fileName = "orders.json";
 
-import { getFilteredItems } from "./baseDal.js";
 
 export async function addOrder(newOrder) {
     addItem(fileName, newOrder);
 }
 
 export async function saveOrders(orders) {
-    saveJson(fileName, orders);
+    saveData(fileName, orders);
 }
 
 export async function getCustomerOrders(customerId) {
@@ -16,4 +17,8 @@ export async function getCustomerOrders(customerId) {
         { customerId },
         { customerId: (order) => order.customerId === customerId },
     );
+}
+
+export async function getOrders() {
+    return await getItems(fileName);
 }

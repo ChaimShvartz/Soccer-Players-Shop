@@ -61,3 +61,7 @@ export async function removeItemFromCart(productId, customerId) {
     saveCustomers(customers);
     return true;
 }
+
+export function hasEnoughBalance(customer, amount) {     
+    return customer.balance >= amount
+}
