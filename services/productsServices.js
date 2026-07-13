@@ -14,9 +14,7 @@ export async function checkProductsAvailability(productsCart) {
         const product = products.find(
             (product) => product.id === productId,
         );
-        if (product.stock < quantity){
-            console.log(product, quantity);
-            
+        if (product.stock < quantity){            
             throw new Error("There are not enough items in stock");
         }
     });

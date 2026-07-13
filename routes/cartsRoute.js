@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
     addProductToCart,
     getVerifiedCustomerId,
-    removeItemFromCart
+    removeItemFromCart,
 } from "../services/customersServices.js";
 import { getCustomer, getCustomerProperty } from "../dal/customersDal.js";
 import { getTotalAmount } from "../services/productsServices.js";
@@ -38,7 +38,7 @@ router.post("/items", async (req, res) => {
             true,
         );
 
-        const product = await getProduct(+productId);
+        const product = await getProduct(productId);
         if (!product)
             return res.status(404).json({
                 success: "false",
@@ -47,7 +47,7 @@ router.post("/items", async (req, res) => {
         if (product.stock < quantity)
             throw new Error("There are not enough items in stock");
 
-        addProductToCart(customerId, productId, +quantity);
+        await addProductToCart(customerId, productId, +quantity);
 
         res.status(201).json({
             success: true,
@@ -66,14 +66,21 @@ router.delete("/items/:productId", async (req, res) => {
             true,
         );
 
-        const product = getProduct(productId);
+        const customer = await getCustomer(customerId);
+        if (!customer)
+            return res.status(404).json({
+                success: false,
+                message: "Customer not found",
+            });
+
+        const product = await getProduct(productId);
         if (!product)
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: "Product not found",
             });
 
-        await removeItemFromCart(productId, customerId)
+        (await removeItemFromCart(productId, customerId))
             ? res.json({ success: true, msg: "Product deleted successfully" })
             : res.sendStatus(204);
     } catch (err) {

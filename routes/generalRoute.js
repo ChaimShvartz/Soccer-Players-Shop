@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/health", (req, res) => {
-    res.json({ success: true, data: "OK" });
+    res.json({ success: true, data: {message: "OK"} });
 });
 
 router.get("/products", async (req, res) => {
@@ -32,7 +32,7 @@ router.get("/account/balance", async (req, res) => {
     try {
         const {customerId} = getVerifiedDetails(req.query, ['customerId'], true);
         const customerBalance = await getCustomerProperty(
-            +customerId,
+            customerId,
             "balance",
         );
 

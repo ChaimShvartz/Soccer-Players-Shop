@@ -8,7 +8,8 @@ import { getVerifiedDetails } from "../utils.js";
 import { validator } from "../validations.js";
 import "dotenv/config";
 
-export function getVerifiedCustomerId({ customerId }) {
+export function getVerifiedCustomerId(dataObj) {
+    const customerId = dataObj?.customerId
     const { checking, errMessage } = validator.id;
     if (!checking(customerId)) throw new Error(errMessage);
     return customerId;

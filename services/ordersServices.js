@@ -7,7 +7,7 @@ export async function checkCart(customerId) {
     const cart = await getCustomerProperty(customerId, 'cart')
     
     if(!cart.length) throw new Error("The cart is empty");
-    checkProductsAvailability(cart)
+    await checkProductsAvailability(cart)
 }
 
 export async function performCheckout(customerId) {
